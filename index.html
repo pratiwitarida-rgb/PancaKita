@@ -3,120 +3,647 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu Belajar - Media Pembelajaran Anak SD</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body data-page="menu">
+<title>INDRAKITA - Media Pembelajaran</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Baloo+2:wght@600;800&display=swap');
 
-<!-- Dekorasi Background -->
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fredoka', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #87CEEB;
+  background-image: 
+    radial-gradient(circle at 20% 30%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 60%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 40% 80%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 90% 20%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 10% 70%, #fff 0 2px, transparent 3px);
+  position: relative;
+  overflow-x: auto;
+}
+
+/* ============ AWAN & MATAHARI ============ */
+.cloud {
+  position: fixed;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.95;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.06));
+}
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+}
+.cloud1 { width: 160px; height: 160px; top: 40px; left: -220px; animation: moveCloud 40s linear infinite; }
+.cloud1::before { width: 120px; height: 120px; top: -40px; left: 80px; }
+.cloud1::after { width: 100px; height: 100px; top: 20px; left: -40px; }
+
+.cloud2 { width: 220px; height: 220px; top: 180px; left: -320px; animation: moveCloud 55s linear infinite; animation-delay: -18s; }
+.cloud2::before { width: 160px; height: 160px; top: -55px; left: 110px; }
+.cloud2::after { width: 130px; height: 130px; top: 30px; left: -55px; }
+
+.cloud3 { width: 150px; height: 150px; top: 420px; left: -220px; animation: moveCloud 48s linear infinite; animation-delay: -30s; }
+.cloud3::before { width: 110px; height: 110px; top: -38px; left: 75px; }
+.cloud3::after { width: 95px; height: 95px; top: 18px; left: -38px; }
+
+.cloud4 { width: 180px; height: 180px; top: 620px; left: -260px; animation: moveCloud 60s linear infinite; animation-delay: -45s; }
+.cloud4::before { width: 130px; height: 130px; top: -45px; left: 90px; }
+.cloud4::after { width: 105px; height: 105px; top: 22px; left: -45px; }
+
+@keyframes moveCloud {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 400px)); }
+}
+
+.sun {
+  position: fixed;
+  top: 30px; right: 40px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, #FFE066 0%, #FFD93D 60%, #FFB800 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(255, 217, 61, 0.8);
+  z-index: 2;
+  animation: sunPulse 3s ease-in-out infinite;
+}
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* ============================================ */
+/* ================= POHON HUTAN ============== */
+/* ============================================ */
+.forest {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tree {
+  position: absolute;
+  bottom: 20px;
+  width: 140px;
+  height: 400px;
+  transform-origin: bottom center;
+  animation: treeSway 6s ease-in-out infinite;
+}
+
+.tree::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 70px;
+  background: 
+    radial-gradient(ellipse 22% 90% at 12% 100%, #4CD137 0%, #2E8B20 75%, transparent 100%),
+    radial-gradient(ellipse 26% 95% at 30% 100%, #55C43D 0%, #3FA82C 75%, transparent 100%),
+    radial-gradient(ellipse 28% 100% at 50% 100%, #6AB04C 0%, #3FA82C 75%, transparent 100%),
+    radial-gradient(ellipse 26% 95% at 70% 100%, #55C43D 0%, #3FA82C 75%, transparent 100%),
+    radial-gradient(ellipse 22% 90% at 88% 100%, #4CD137 0%, #2E8B20 75%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.tree .trunk {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 26px; height: 170px;
+  background: linear-gradient(90deg, #5A3A1B 0%, #7A4E25 40%, #8B5A2B 60%, #5A3A1B 100%);
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset -3px 0 0 rgba(0,0,0,0.25), inset 3px 0 0 rgba(255,255,255,0.1);
+}
+
+.tree .leaf-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  box-shadow: 
+    inset -8px -8px 0 rgba(0,0,0,0.1),
+    inset 8px 8px 0 rgba(255,255,255,0.12),
+    0 6px 10px rgba(0,0,0,0.15);
+}
+.tree .leaf-1 {
+  bottom: 140px; width: 145px; height: 115px;
+  background: radial-gradient(circle at 35% 30%, #55C43D 0%, #3FA82C 55%, #2E8B20 100%);
+}
+.tree .leaf-2 {
+  bottom: 205px; width: 118px; height: 98px;
+  background: radial-gradient(circle at 35% 30%, #6AB04C 0%, #4CD137 55%, #3FA82C 100%);
+}
+.tree .leaf-3 {
+  bottom: 260px; width: 88px; height: 82px;
+  background: radial-gradient(circle at 35% 30%, #8DE06B 0%, #6AB04C 50%, #4CD137 100%);
+}
+
+.tree .fruit {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FF8A5C, #E85A2A);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  animation: fruitBob 3s ease-in-out infinite;
+}
+.tree .fruit.fa { bottom: 190px; left: 30%; animation-delay: 0s; }
+.tree .fruit.fb { bottom: 215px; left: 65%; animation-delay: 0.5s; }
+.tree .fruit.fc { bottom: 170px; left: 55%; animation-delay: 1s; }
+.tree .fruit.fd { bottom: 240px; left: 45%; animation-delay: 1.5s; }
+
+@keyframes fruitBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: rotate(-0.8deg); }
+  50%      { transform: rotate(0.8deg); }
+}
+
+.tree-left-1 { left: -40px; transform: scale(1.05); animation-delay: 0s; }
+.tree-left-2 { left: 70px;  transform: scale(0.8);  animation-delay: -1.5s; z-index: 0; }
+.tree-left-3 { left: 10px;  transform: scale(0.65); animation-delay: -3s;   z-index: 0; opacity: 0.9; }
+
+.tree-right-1 { right: -40px; transform: scale(1.05); animation-delay: -0.8s; }
+.tree-right-2 { right: 70px;  transform: scale(0.8);  animation-delay: -2.3s; z-index: 0; }
+.tree-right-3 { right: 10px;  transform: scale(0.65); animation-delay: -3.8s; z-index: 0; opacity: 0.9; }
+
+/* ============================================ */
+/* ============== TANAH + RUMPUT ============== */
+/* ============================================ */
+.ground {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%; height: 140px;
+  z-index: 3;
+  pointer-events: none;
+}
+.ground .soil {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 55px;
+  background: linear-gradient(180deg, #6AB04C 0%, #4a8b32 40%, #3d7a28 100%);
+  box-shadow: inset 0 4px 0 rgba(0,0,0,0.08);
+}
+
+.grass-back,
+.grass-mid,
+.grass-front {
+  position: absolute;
+  left: 0; width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+.grass-back  { bottom: 50px; height: 70px; z-index: 1; opacity: 0.95; }
+.grass-mid   { bottom: 48px; height: 60px; z-index: 2; }
+.grass-front { bottom: 45px; height: 50px; z-index: 3; }
+
+.blade {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 50% 50% 20% 20% / 100% 100% 0 0;
+  transform-origin: bottom center;
+  animation: waveGrass 2.6s ease-in-out infinite;
+  will-change: transform;
+  background: linear-gradient(to top, #3FA82C 0%, #4CD137 45%, #7BDB5C 80%, #A2E88A 100%);
+  box-shadow: inset -1px 0 0 rgba(0,0,0,0.08);
+}
+
+.grass-back .blade {
+  background: linear-gradient(to top, #2E8B20 0%, #3FA82C 50%, #4CD137 100%);
+  box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
+}
+.grass-mid .blade {
+  background: linear-gradient(to top, #3FA82C 0%, #4CD137 50%, #6AB04C 100%);
+}
+.blade:nth-child(2n) { border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.blade:nth-child(3n) { background: linear-gradient(to top, #2E8B20, #55C43D 60%, #8DE06B 100%); }
+.blade:nth-child(4n) { background: linear-gradient(to top, #4a8b32, #6AB04C 50%, #A2E88A 100%); }
+.blade:nth-child(5n) { background: linear-gradient(to top, #3FA82C, #7BDB5C 60%, #A2E88A 100%); }
+.blade:nth-child(6n) { background: linear-gradient(to top, #2E8B20, #4CD137 50%, #8DE06B 100%); }
+.blade:nth-child(7n) { opacity: 0.9; filter: brightness(1.1); }
+.blade:nth-child(8n) { opacity: 0.95; filter: brightness(0.95); }
+
+@keyframes waveGrass {
+  0%   { transform: rotate(-5deg) scaleY(1); }
+  25%  { transform: rotate(3deg) scaleY(1.03); }
+  50%  { transform: rotate(6deg) scaleY(1); }
+  75%  { transform: rotate(-2deg) scaleY(0.98); }
+  100% { transform: rotate(-5deg) scaleY(1); }
+}
+
+/* ============ BUNGA ============ */
+.flower-css {
+  position: absolute;
+  bottom: 50px;
+  width: 40px; height: 70px;
+  transform-origin: bottom center;
+  animation: flowerSway 3.5s ease-in-out infinite;
+  z-index: 4;
+}
+.flower-css .stem {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 42px;
+  background: linear-gradient(180deg, #4CD137 0%, #2E8B20 100%);
+  border-radius: 3px;
+}
+.flower-css .leaf {
+  position: absolute;
+  width: 16px; height: 10px;
+  background: #4CD137;
+  border-radius: 50% 0 50% 0;
+  bottom: 18px;
+}
+.flower-css .leaf.left  { left: -6px;  transform: rotate(-30deg); }
+.flower-css .leaf.right { right: -6px; transform: rotate(30deg) scaleX(-1); }
+
+.flower-css .bloom {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #FFD93D 0 22%, transparent 23%),
+    radial-gradient(circle at 50% 15%, var(--petal) 0 32%, transparent 33%),
+    radial-gradient(circle at 85% 50%, var(--petal) 0 32%, transparent 33%),
+    radial-gradient(circle at 50% 85%, var(--petal) 0 32%, transparent 33%),
+    radial-gradient(circle at 15% 50%, var(--petal) 0 32%, transparent 33%),
+    radial-gradient(circle at 75% 25%, var(--petal) 0 26%, transparent 27%),
+    radial-gradient(circle at 75% 75%, var(--petal) 0 26%, transparent 27%),
+    radial-gradient(circle at 25% 75%, var(--petal) 0 26%, transparent 27%),
+    radial-gradient(circle at 25% 25%, var(--petal) 0 26%, transparent 27%);
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+}
+.flower-css.pink   { --petal: #FF6B9D; }
+.flower-css.yellow { --petal: #FFD93D; }
+.flower-css.purple { --petal: #A29BFE; }
+.flower-css.orange { --petal: #FF9F43; }
+.flower-css.blue   { --petal: #74B9FF; }
+.flower-css.white  { --petal: #FFFFFF; }
+.flower-css.red    { --petal: #FF5252; }
+
+.flower-css.f1 { left: 13%;  animation-delay: 0s;   transform: scale(0.9); }
+.flower-css.f2 { left: 24%; animation-delay: -0.6s; }
+.flower-css.f3 { left: 38%; animation-delay: -1.2s; transform: scale(0.85); }
+.flower-css.f4 { left: 52%; animation-delay: -0.3s; transform: scale(1.05); }
+.flower-css.f5 { left: 64%; animation-delay: -1.5s; }
+.flower-css.f6 { left: 79%; animation-delay: -0.9s; transform: scale(0.95); }
+.flower-css.f7 { left: 91%; animation-delay: -1.8s; transform: scale(0.9); }
+
+@keyframes flowerSway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+/* ============ KUPU-KUPU ============ */
+.butterfly {
+  position: fixed;
+  width: 22px; height: 22px;
+  z-index: 5;
+  pointer-events: none;
+  animation: flyAround 14s ease-in-out infinite;
+}
+.butterfly::before,
+.butterfly::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 16px;
+  background: #FFD93D;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform-origin: right center;
+  animation: flapWing 0.25s ease-in-out infinite alternate;
+}
+.butterfly::before { left: 0;  transform: rotate(-20deg); }
+.butterfly::after  { right: 0; transform: scaleX(-1) rotate(-20deg); transform-origin: left center; }
+.butterfly.b1 { top: 60%; left: -60px; animation-delay: 0s; }
+.butterfly.b2 { top: 70%; left: -60px; animation-delay: -7s; }
+
+@keyframes flyAround {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(30vw, -80px) rotate(5deg); }
+  50%  { transform: translate(60vw, 40px) rotate(-5deg); }
+  75%  { transform: translate(90vw, -80px) rotate(5deg); }
+  100% { transform: translate(115vw, 0) rotate(0deg); }
+}
+@keyframes flapWing {
+  0%   { transform: rotate(-20deg) scaleY(1); }
+  100% { transform: rotate(-20deg) scaleY(0.4); }
+}
+
+/* ============================================ */
+/* ========== JUDUL: INDRAKITA ================= */
+/* ============================================ */
+.title-wrap {
+  display: inline-block;
+  position: relative;
+  padding: 30px 20px;
+  animation: titleFloat 4s ease-in-out infinite;
+}
+@keyframes titleFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* === JUDUL: UKURAN TETAP (tidak fleksibel) === */
+.app-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;       /* tidak boleh turun baris */
+  white-space: nowrap;     /* kunci ukuran tetap */
+  gap: 6px;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============ HURUF INDRAKITA (RAINBOW, TANPA OUTLINE) ============ */
+.app-name span {
+  --c1: #FF8A80;
+  --c2: #FF3D3D;
+  --c3: #B71C1C;
+  --ty: 0px;
+  --rot: 0deg;
+
+  font-family: 'Baloo 2', cursive;
+  font-size: 6.5rem;       /* UKURAN TETAP, tidak berubah di media query */
+  font-weight: 800;
+  text-transform: uppercase;
+  display: inline-block;
+  line-height: 1;
+
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 42%),
+    linear-gradient(180deg, var(--c1) 0%, var(--c2) 52%, var(--c3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 4px 0 var(--c3),
+    0 8px 0 rgba(0,0,0,0.18),
+    0 16px 22px rgba(0,0,0,0.42);
+
+  transform: translateY(var(--ty)) rotate(var(--rot));
+  animation: letterBob 3.5s ease-in-out infinite;
+}
+
+@keyframes letterBob {
+  0%, 100% { transform: translateY(var(--ty)) rotate(var(--rot)); }
+  50%      { transform: translateY(calc(var(--ty) - 8px)) rotate(var(--rot)); }
+}
+
+/* ---- Warna + posisi tiap huruf (rainbow) ---- */
+.app-name .l1 { --c1:#FF8A80; --c2:#FF3D3D; --c3:#B71C1C; --ty:-8px;  --rot:-6deg; animation-delay: 0s;   }
+.app-name .l2 { --c1:#FFB74D; --c2:#FF8F00; --c3:#E65100; --ty:10px;  --rot:4deg;  animation-delay: 0.2s; }
+.app-name .l3 { --c1:#FFE082; --c2:#FFC107; --c3:#F57F17; --ty:-12px; --rot:-3deg; animation-delay: 0.4s; }
+.app-name .l4 { --c1:#81C784; --c2:#43A047; --c3:#1B5E20; --ty:7px;   --rot:7deg;  animation-delay: 0.6s; }
+.app-name .l5 { --c1:#4DD0E1; --c2:#00ACC1; --c3:#006064; --ty:-10px; --rot:-5deg; animation-delay: 0.8s; }
+.app-name .l6 { --c1:#64B5F6; --c2:#1E88E5; --c3:#0D47A1; --ty:11px;  --rot:3deg;  animation-delay: 1s;   }
+.app-name .l7 { --c1:#BA68C8; --c2:#8E24AA; --c3:#4A148C; --ty:-7px;  --rot:-7deg; animation-delay: 1.2s; }
+.app-name .l8 { --c1:#F06292; --c2:#D81B60; --c3:#880E4F; --ty:9px;   --rot:5deg;  animation-delay: 1.4s; }
+.app-name .l9 { --c1:#FF8A65; --c2:#F4511E; --c3:#BF360C; --ty:-11px; --rot:-4deg; animation-delay: 1.6s; }
+
+/* ============ HALAMAN AWAL ============ */
+.start-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  overflow-y: auto;
+  padding: 40px 20px 60px;
+}
+.start-inner {
+  margin: auto;
+  width: 100%;
+  max-width: 780px;
+  text-align: center;
+  animation: fadeDown 0.9s ease;
+  position: relative;
+  z-index: 10;
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ TOMBOL MULAI BELAJAR (di bawah INDRAKITA) ============ */
+.btn-start {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: 16px 42px;
+  border-radius: 60px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  /* === POSISI DI BAWAH JUDUL === */
+  position: relative;
+  display: inline-block;
+  margin-top: 40px;       /* jarak dari judul INDRAKITA */
+
+  background: linear-gradient(180deg, #4CD137 0%, #2E8B20 100%);
+  box-shadow: 
+    0 9px 0 #1F6B15,
+    0 18px 30px rgba(0,0,0,0.28);
+  animation: startBounce 2.4s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-start:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 
+    0 14px 0 #1F6B15,
+    0 24px 36px rgba(0,0,0,0.3);
+  filter: brightness(1.07);
+}
+.btn-start:active {
+  transform: translateY(5px) scale(1);
+  box-shadow: 
+    0 4px 0 #1F6B15,
+    0 10px 20px rgba(0,0,0,0.25);
+}
+@keyframes startBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* ============ RESPONSIVE (hanya dekorasi, judul & tombol tidak berubah) ============ */
+@media (max-width: 900px) {
+  .tree-left-3, .tree-right-3 { display: none; }
+}
+
+@media (max-width: 700px) {
+  /* Judul & tombol sengaja TIDAK diubah ukurannya */
+
+  .sun { width: 70px; height: 70px; top: 15px; right: 15px; }
+  .ground { height: 130px; }
+  .flower-css { transform: scale(0.75); }
+  .ground .soil { height: 45px; }
+
+  .tree-left-1  { transform: scale(0.75); left: -50px; }
+  .tree-left-2  { display: none; }
+  .tree-left-3  { display: none; }
+  .tree-right-1 { transform: scale(0.75); right: -50px; }
+  .tree-right-2 { display: none; }
+  .tree-right-3 { display: none; }
+
+  .cloud1 { width: 110px; height: 110px; }
+  .cloud1::before { width: 80px; height: 80px; top: -28px; left: 55px; }
+  .cloud1::after  { width: 70px; height: 70px; top: 15px; left: -28px; }
+  .cloud2 { width: 150px; height: 150px; }
+  .cloud2::before { width: 110px; height: 110px; top: -38px; left: 75px; }
+  .cloud2::after  { width: 90px;  height: 90px;  top: 20px; left: -38px; }
+  .cloud3 { width: 100px; height: 100px; }
+  .cloud3::before { width: 75px; height: 75px; top: -25px; left: 50px; }
+  .cloud3::after  { width: 65px; height: 65px; top: 12px; left: -25px; }
+  .cloud4 { width: 120px; height: 120px; }
+  .cloud4::before { width: 90px; height: 90px; top: -30px; left: 60px; }
+  .cloud4::after  { width: 72px; height: 72px; top: 15px; left: -30px; }
+}
+
+@media (max-width: 400px) {
+  .tree-left-1  { transform: scale(0.55); left: -60px; }
+  .tree-right-1 { transform: scale(0.55); right: -60px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= DEKORASI BACKGROUND ================= -->
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 <div class="cloud cloud3"></div>
 <div class="cloud cloud4"></div>
 <div class="sun"></div>
+
+<!-- ================= HUTAN ================= -->
+<div class="forest">
+  <div class="tree tree-left-3">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+  </div>
+  <div class="tree tree-left-2">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fa"></div>
+    <div class="fruit fc"></div>
+  </div>
+  <div class="tree tree-left-1">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fa"></div>
+    <div class="fruit fb"></div>
+    <div class="fruit fc"></div>
+    <div class="fruit fd"></div>
+  </div>
+
+  <div class="tree tree-right-3">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+  </div>
+  <div class="tree tree-right-2">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fb"></div>
+    <div class="fruit fd"></div>
+  </div>
+  <div class="tree tree-right-1">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fa"></div>
+    <div class="fruit fb"></div>
+    <div class="fruit fc"></div>
+    <div class="fruit fd"></div>
+  </div>
+</div>
+
+<!-- ================= TANAH + RUMPUT ================= -->
+<div class="ground">
+  <div class="soil"></div>
+
+  <div class="grass-back"  id="grassBack"></div>
+  <div class="grass-mid"   id="grassMid"></div>
+  <div class="grass-front" id="grassFront"></div>
+
+  <div class="flower-css f1 pink"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f2 yellow"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f3 purple"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f4 orange"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f5 blue"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f6 red"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css f7 white"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+</div>
+
+<!-- ================= KUPU-KUPU ================= -->
 <div class="butterfly b1"></div>
 <div class="butterfly b2"></div>
 
-<div class="ground">
-  <div class="soil"></div>
-  <div class="grass-back"></div>
-  <div class="grass-front"></div>
-  <div class="flower-css pink f1"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css yellow f2"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css purple f3"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css red f4"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css orange f5"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css blue f6"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
-  <div class="flower-css white f7"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+<!-- ================= HALAMAN AWAL ================= -->
+<div class="start-screen" id="startScreen">
+  <div class="start-inner">
+
+    <div class="title-wrap">
+      <h1 class="app-name">
+        <span class="l1">I</span><span class="l2">N</span><span class="l3">D</span><span class="l4">R</span><span class="l5">A</span><span class="l6">K</span><span class="l7">I</span><span class="l8">T</span><span class="l9">A</span>
+      </h1>
+    </div>
+
+    <button class="btn-start" id="btnStart">Mulai Belajar</button>
+  </div>
 </div>
 
-<!-- Header -->
-<header>
-  <div class="title-badge">
-    <span class="spark s1 img-star-4"></span>
-    <span class="spark s2 img-star-5"></span>
-    <span class="spark s3 img-star-5"></span>
-    <span class="spark s4 img-star-4"></span>
-    <span class="btn-icon left"></span>
-    <h1>Menu Belajar</h1>
-    <span class="btn-icon right"></span>
-  </div>
-  <p class="subtitle">
-    <span class="inline-star img-star-4"></span>
-    Ayo pilih petualangan belajarmu hari ini!
-    <span class="inline-star img-star-4"></span>
-  </p>
-</header>
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+function fillGrass(el, count, minH, maxH) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const w = (4 + Math.random() * 6).toFixed(1);
+    const h = (minH + Math.random() * (maxH - minH)).toFixed(1);
+    const d = (-Math.random() * 2.6).toFixed(2);
+    html += `<div class="blade" style="width:${w}px;height:${h}px;animation-delay:${d}s"></div>`;
+  }
+  el.innerHTML = html;
+}
+fillGrass(document.getElementById('grassBack'),  90, 35, 70);
+fillGrass(document.getElementById('grassMid'),   80, 28, 60);
+fillGrass(document.getElementById('grassFront'), 70, 22, 50);
 
-<!-- Menu Grid -->
-<main>
-  <div class="menu-grid">
-
-    <a href="petunjuk.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='24' y='18' width='52' height='70' rx='8' fill='white'/%3E%3Crect x='38' y='10' width='24' height='16' rx='4' fill='white'/%3E%3Crect x='34' y='38' width='32' height='5' rx='2.5' fill='%23E17E20'/%3E%3Crect x='34' y='52' width='32' height='5' rx='2.5' fill='%23E17E20'/%3E%3Crect x='34' y='66' width='20' height='5' rx='2.5' fill='%23E17E20'/%3E%3C/svg%3E" alt="Petunjuk">
-      </div>
-      <h2>Petunjuk</h2>
-      <p>Yuk baca cara pakainya!</p>
-    </a>
-
-    <a href="cp.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='white' stroke-width='7'/%3E%3Ccircle cx='50' cy='50' r='20' fill='none' stroke='white' stroke-width='7'/%3E%3Ccircle cx='50' cy='50' r='8' fill='white'/%3E%3C/svg%3E" alt="CP dan TP">
-      </div>
-      <h2>CP &amp; TP</h2>
-      <p>Target belajar kita</p>
-    </a>
-
-    <a href="materi mata.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 26 Q32 16 12 22 L12 78 Q32 72 50 82 Z' fill='white'/%3E%3Cpath d='M50 26 Q68 16 88 22 L88 78 Q68 72 50 82 Z' fill='white'/%3E%3Cline x1='50' y1='24' x2='50' y2='82' stroke='%2310A37F' stroke-width='3'/%3E%3C/svg%3E" alt="Materi">
-      </div>
-      <h2>Materi</h2>
-      <p>Belajar hal baru yuk!</p>
-    </a>
-
-    <!-- ===== MENU BARU: RUANG INDRA ===== -->
-    <a href="ruang-indra.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q30 22 50 22 Q70 22 90 50 Q70 78 50 78 Q30 78 10 50 Z' fill='white'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%237E57C2'/%3E%3Ccircle cx='50' cy='50' r='6' fill='white'/%3E%3C/svg%3E" alt="Ruang Indra">
-      </div>
-      <h2>Ruang Indra</h2>
-      <p>Jelajahi 5 indra kita!</p>
-    </a>
-    <!-- ===== END RUANG INDRA ===== -->
-
-    <a href="latihan.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='36' y='14' width='28' height='58' fill='white'/%3E%3Crect x='36' y='14' width='28' height='10' fill='%23D64577'/%3E%3Cpolygon points='36,72 64,72 50,90' fill='white'/%3E%3Cpolygon points='43,72 57,72 50,90' fill='%23333'/%3E%3C/svg%3E" alt="Latihan">
-      </div>
-      <h2>Latihan</h2>
-      <p>Ayo kerjakan soal!</p>
-    </a>
-
-    <a href="pengembang.html" class="menu-card">
-      <span class="star-deco img-star-5"></span>
-      <span class="star-deco img-star-5"></span>
-      <div class="icon-circle">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='15' fill='white'/%3E%3Cpath d='M20 90 Q20 58 50 58 Q80 58 80 90 Z' fill='white'/%3E%3C/svg%3E" alt="Pengembang">
-      </div>
-      <h2>Pengembang</h2>
-      <p>Kenalan dengan pembuat</p>
-    </a>
-
-  </div>
-</main>
-
-<script src="script.js"></script>
+document.getElementById('btnStart').addEventListener('click', () => {
+  window.location.href = 'menu.html';
+});
+</script>
 </body>
 </html>
