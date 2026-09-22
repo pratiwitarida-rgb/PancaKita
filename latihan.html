@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan - Menu Belajar</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ==== Kuis per-slide ==== */
+  .quiz-slide { display: none; animation: slideIn .35s ease; }
+  .quiz-slide.active { display: block; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideBack {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .quiz-slide.back { animation: slideBack .35s ease; }
+
+  /* Progres */
+  .progress-wrap { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; }
+  .progress-bar {
+    flex: 1; height: 12px; background: #e3f2fb; border-radius: 20px;
+    overflow: hidden; border: 2px solid #c7e6f5;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #7ec8e3, #4aa3c7);
+    border-radius: 20px; transition: width .4s ease;
+  }
+  .progress-text { font-size: .85rem; font-weight: 700; color: #2b7fa3; white-space: nowrap; }
+
+  /* Kartu soal */
+  .quiz-card {
+    background: #ffffffd9; border-radius: 16px; padding: 18px 18px 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08); border-left: 6px solid #7ec8e3;
+    text-align: left; min-height: 300px; display: flex; flex-direction: column;
+  }
+  .quiz-card .question {
+    font-size: 1.05rem; font-weight: 700; color: #2b5c74;
+    line-height: 1.45; margin-bottom: 14px;
+  }
+  .quiz-card .question .num {
+    display: inline-block; background: #7ec8e3; color: #fff;
+    width: 28px; height: 28px; line-height: 28px; text-align: center;
+    border-radius: 50%; margin-right: 8px; font-size: .9rem;
+  }
+
+  /* Opsi jawaban */
+  .option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; margin: 7px 0; border-radius: 12px;
+    background: #f4fbff; border: 2px solid #d9eefa;
+    cursor: pointer; transition: all .18s ease;
+    font-size: .96rem; line-height: 1.35;
+  }
+  .option:hover { background: #e6f7ff; border-color: #9adcf5; transform: translateX(4px); }
+  .option .letter { font-weight: 800; color: #2b7fa3; min-width: 22px; font-size: 1rem; }
+  .option.correct { background: #d8f8d8; border-color: #4caf50; animation: pop .35s ease; }
+  .option.correct .letter { color: #2e7d32; }
+  .option.wrong { background: #ffe0e0; border-color: #e74c3c; animation: shake .4s ease; }
+  .option.wrong .letter { color: #c62828; }
+  .option.disabled { pointer-events: none; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 12px; padding: 12px 14px; border-radius: 12px;
+    font-size: .93rem; line-height: 1.5; display: none;
+    animation: fadeIn .3s ease;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: #e7fbe7; border-left: 5px solid #4caf50; color: #256b28; }
+  .feedback.no  { background: #fff0f0; border-left: 5px solid #e74c3c; color: #8e2828; }
+  .feedback b { display: block; margin-bottom: 4px; font-size: .98rem; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(-5px)} to{opacity:1; transform:translateY(0)} }
+
+  /* Tombol dasar (biru) */
+  .btn-slide {
+    flex: 1; padding: 14px 28px; border: none; border-radius: 50px;
+    font-size: 1rem; font-weight: 800; cursor: pointer;
+    transition: all 0.1s ease; font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; text-decoration: none; text-align: center;
+    background: linear-gradient(to bottom, #59b8e7, #59b8e7);
+    color: #ffffff; box-shadow: 0 6px 0 #1f688c;
+  }
+  .btn-slide:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #4aa9d8, #4aa9d8);
+  }
+  .btn-slide:active:not(:disabled) { transform: translateY(6px); box-shadow: 0 0 0 #1f688c; }
+  .btn-slide:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: 0 6px 0 #1f688c; transform: none; }
+
+  /* Tombol pink (Menjodohkan & Ganti Mode & Menu Utama)
+     ⬇ specificity dinaikkan agar hover-nya menang */
+  .btn-slide.btn-menu-score {
+    background: linear-gradient(to bottom, #f472b6, #ec4899);
+    color: #fff;
+    box-shadow: 0 6px 0 #be185d;
+  }
+  .btn-slide.btn-menu-score:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #f472b6, #db2777);
+    color: #fff;
+  }
+  .btn-slide.btn-menu-score:active:not(:disabled) {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #be185d;
+  }
+
+  .slide-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+
+  /* ====== START SCREEN ====== */
+  .start-screen { display: flex; justify-content: center; animation: fadeIn .4s ease; }
+  .start-card {
+    text-align: center; padding: 24px 18px;
+    background: linear-gradient(135deg, #fff8d6, #ffe9a8);
+    border-radius: 18px; border: 3px dashed #f0b429;
+    width: 100%; animation: pop .5s ease;
+  }
+  .start-card h3 { color: #b9770e; margin: 4px 0 6px; font-size: 1.3rem; }
+  .start-card p { color: #7a5200; margin: 0 0 18px; font-size: .95rem; }
+  .mode-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .mode-buttons .btn-slide {
+    flex: 1; min-width: 170px; max-width: 240px; padding: 16px 20px; font-size: 1.05rem;
+  }
+
+  /* ====== MENJODOHKAN ====== */
+  .match-card {
+    background: #ffffffd9;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    border-left: 6px solid #7ec8e3;
+    position: relative;
+  }
+  .match-instructions {
+    font-size: .95rem; color: #2b5c74; font-weight: 700;
+    margin-bottom: 14px; text-align: center;
+  }
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 70px;   /* ⬅ JARAK ANTAR KOLOM */
+    row-gap: 10px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .match-item {
+    padding: 10px 8px;
+    border-radius: 12px;
+    background: #f4fbff;
+    border: 2px solid #d9eefa;
+    cursor: pointer;
+    transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    font-size: .93rem;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1.3;
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    position: relative;
+    z-index: 2;
+  }
+  .match-item-right { padding: 12px 10px; }
+  .match-item-left { flex-direction: column; gap: 4px; }
+  .match-item:hover:not(.matched) {
+    background: #e6f7ff;
+    border-color: #9adcf5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  }
+  .match-item.selected {
+    background: #fff3c4;
+    border-color: #f0b429;
+    box-shadow: 0 0 0 3px #fde68a55;
+    transform: scale(1.03);
+  }
+  .match-item.matched {
+    background: #d8f8d8;
+    border-color: #4caf50;
+    color: #2e7d32;
+    font-weight: 700;
+    pointer-events: none;
+    cursor: default;
+  }
+  .match-item.wrong-flash {
+    background: #ffe0e0;
+    border-color: #e74c3c;
+    animation: shake .4s ease;
+  }
+
+  .match-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  /* ⬇ GANTI GAMBAR: sesuaikan ukuran & tampilan gambar */
+  .match-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .match-label {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #2b5c74;
+    line-height: 1.15;
+    text-align: center;
+  }
+  .match-item.matched .match-label { color: #2e7d32; }
+
+  /* SVG overlay untuk menggambar garis */
+  .match-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: visible;
+  }
+
+  @media (max-width: 420px) {
+    .match-grid { column-gap: 40px; row-gap: 8px; }
+    .match-item { font-size: .8rem; padding: 8px 6px; min-height: 70px; }
+    .match-icon { width: 48px; height: 48px; }
+    .match-label { font-size: .72rem; }
+  }
+
+  /* Skor akhir */
+  .score-screen {
+    text-align: center; padding: 20px 16px;
+    background: linear-gradient(135deg,#fff8d6,#ffe9a8);
+    border-radius: 18px; border: 3px dashed #f0b429;
+    animation: pop .5s ease;
+  }
+  .score-screen .label { font-size: 1rem; color: #7a5200; margin-top: 6px; }
+  .score-screen .big { font-size: 2.4rem; font-weight: 800; color: #b9770e; margin: 4px 0; }
+  .score-screen .msg { font-size: .95rem; color: #7a5200; margin-top: 8px; line-height: 1.5; }
+
+  .stars-img { display: flex; justify-content: center; gap: 4px; margin: 6px 0; }
+  .star-img { width: 36px; height: 36px; }
+
+  .score-buttons {
+    display: flex; gap: 10px; justify-content: center;
+    flex-wrap: wrap; margin-top: 16px;
+  }
+</style>
+</head>
+<body data-page="latihan">
+
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+<div class="cloud cloud3"></div>
+<div class="cloud cloud4"></div>
+<div class="sun"></div>
+<div class="butterfly b1"></div>
+<div class="butterfly b2"></div>
+
+<div class="ground">
+  <div class="soil"></div>
+  <div class="grass-back"></div>
+  <div class="grass-front"></div>
+  <div class="flower-css pink f1"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css yellow f2"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css purple f3"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css red f4"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css orange f5"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css blue f6"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css white f7"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+</div>
+
+<div class="content-wrapper">
+  <div class="content-box">
+    <h2 class="page-title">Latihan Panca Indra</h2>
+
+    <!-- ====== PILIH MODE ====== -->
+    <div class="start-screen" id="startScreen">
+      <div class="start-card">
+        <h3>Pilih Jenis Latihan</h3>
+        <p>Mau latihan yang mana hari ini?</p>
+        <div class="mode-buttons">
+          <button class="btn-slide" data-mode="pg">Pilihan Ganda</button>
+          <button class="btn-slide btn-menu-score" data-mode="match">Menjodohkan</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1 / 10</div>
+    </div>
+
+    <div id="slideContainer"></div>
+
+    <div class="slide-nav" id="slideNav" style="display:none">
+      <button class="btn-slide" id="btnPrev" disabled>← Sebelumnya</button>
+      <button class="btn-slide" id="btnNext" disabled>Selanjutnya →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   DATA SOAL PILIHAN GANDA
+   ========================================================= */
+const questions = [
+  { q: "Di mana letak mata kita?",
+    options: ["Di dalam mulut", "Di depan kepala", "Di samping perut", "Di seluruh tubuh"],
+    answer: 1,
+    ok: "Hebat! Mata kita terletak di bagian depan kepala. Berjumlah sepasang.",
+    no: "Jawaban yang benar adalah B. Di depan kepala." },
+  { q: "Apa yang bisa kita lakukan dengan mata?",
+    options: ["Mendengar musik", "Menelan makanan", "Merasakan panas", "Melihat pelangi"],
+    answer: 3,
+    ok: "Tepat sekali! Mata digunakan untuk melihat pelangi.",
+    no: "Jawaban yang benar adalah D. Melihat pelangi." },
+  { q: "Di mana letak telinga kita?",
+    options: ["Di samping kanan dan kiri mulut", "Di samping kanan dan kiri hidung", "Di samping kanan dan kiri kepala", "Di samping kanan dan kiri mata"],
+    answer: 2,
+    ok: "Benar! Telinga ada di samping kanan dan kiri kepala.",
+    no: "Jawaban yang benar adalah C." },
+  { q: "Apa fungsi utama telinga bagi kita?",
+    options: ["Mendengar suara di sekitar", "Merasakan manis dan asin", "Melihat warna dan bentuk", "Mencium bau asap kebakaran"],
+    answer: 0,
+    ok: "Betul! Telinga berfungsi untuk mendengar suara di sekitar.",
+    no: "Jawaban yang benar adalah A." },
+  { q: "Berapa jumlah lubang yang ada di hidung kita?",
+    options: ["Satu", "Dua", "Tiga", "Empat"],
+    answer: 1,
+    ok: "Pintar! Hidung kita memiliki dua lubang.",
+    no: "Jawaban yang benar adalah B. Dua." },
+  { q: "Apa yang bisa kita lakukan dengan hidung?",
+    options: ["Mencium bau harum", "Membaca tulisan", "Meraba benda kasar", "Mendengar suara"],
+    answer: 0,
+    ok: "Tepat! Hidung untuk mencium bau harum.",
+    no: "Jawaban yang benar adalah A." },
+  { q: "Di mana letak lidah kita?",
+    options: ["Di samping kepala", "Di dalam mulut", "Di depan kepala", "Di tengah wajah"],
+    answer: 1,
+    ok: "Benar sekali! Lidah terletak di dalam mulut.",
+    no: "Jawaban yang benar adalah B. Di dalam mulut." },
+  { q: "Rasa apa saja yang bisa kita rasakan dengan lidah?",
+    options: ["Jauh dan dekat", "Panas dan dingin", "Halus dan kasar", "Manis dan pahit"],
+    answer: 3,
+    ok: "Luar biasa! Lidah merasakan manis dan pahit.",
+    no: "Jawaban yang benar adalah D." },
+  { q: "Mengapa kulit disebut sebagai indra yang paling luas?",
+    options: ["Karena menutupi seluruh tubuh", "Karena hanya ada di telapak tangan", "Karena terletak di dalam mulut", "Karena ada di depan kepala"],
+    answer: 0,
+    ok: "Hebat! Kulit menutupi seluruh tubuh kita.",
+    no: "Jawaban yang benar adalah A." },
+  { q: "Apa yang bisa kita rasakan dengan kulit?",
+    options: ["Bau wangi", "Suara merdu", "Panas dan dingin", "Warna dan bentuk"],
+    answer: 2,
+    ok: "Sempurna! Kulit dapat merasakan panas dan dingin.",
+    no: "Jawaban yang benar adalah C." }
+];
+
+/* =========================================================
+   DATA MENJODOHKAN
+   =========================================================
+   ⬇ GANTI GAMBAR DI SINI
+   Cukup ubah nilai "img" dengan path file gambarmu.
+   Contoh: "img/mata.png", "gambar/telinga.jpg", dst.
+   ========================================================= */
+const matchPairs = [
+  { img: "mata.png",    label: "Mata",    right: "Melihat warna, bentuk dan gerak benda" },
+  { img: "telinga.png", label: "Telinga", right: "Membantu mendengar suara di sekitar kita" },
+  { img: "hidung.png",  label: "Hidung",  right: "Mencium bau baik yang harum maupun tidak" },
+  { img: "lidah.png",   label: "Lidah",   right: "Merasakan rasa manis, asin, asam, dan pahit" },
+  { img: "kulit.png",   label: "Kulit",   right: "Merasakan panas, dingin, halus dan kasar" }
+];
+
+/* =========================================================
+   SUARA
+   ========================================================= */
+let audioCtx = null;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playCorrect() {
+  try {
+    const ctx = getCtx();
+    [523.25, 659.25, 783.99].forEach((freq, i) => {
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = "sine"; osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.11;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.24);
+    });
+  } catch (e) {}
+}
+function playWrong() {
+  try {
+    const ctx = getCtx();
+    [392.00, 311.13].forEach((freq, i) => {
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = "triangle"; osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.16;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.22, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.34);
+    });
+  } catch (e) {}
+}
+function playFinish() {
+  try {
+    const ctx = getCtx();
+    [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = "sine"; osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.13;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.28, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.3);
+    });
+  } catch (e) {}
+}
+function playClick() {
+  try {
+    const ctx = getCtx();
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = "sine"; osc.frequency.value = 880;
+    const t = ctx.currentTime;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.1);
+  } catch (e) {}
+}
+
+/* =========================================================
+   REFERENSI DOM
+   ========================================================= */
+const LETTERS = ["A", "B", "C", "D"];
+const container   = document.getElementById("slideContainer");
+const progressFill= document.getElementById("progressFill");
+const progressText= document.getElementById("progressText");
+const progressWrap= document.getElementById("progressWrap");
+const slideNav    = document.getElementById("slideNav");
+const btnPrev     = document.getElementById("btnPrev");
+const btnNext     = document.getElementById("btnNext");
+const startScreen = document.getElementById("startScreen");
+
+let mode = null;
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let score = 0;
+let matchState = null;
+let dragState = null;
+
+const STAR_SVG = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0ZGQjc1MCI+PHBhdGggZD0iTTEyIDE3LjI3TDE4LjE4IDIxbC0xLjY0LTcuMDNMMjIgOS4yNGwtNy4xOS0uNjFMMTIgMiA5LjE5IDguNjMgMiA5LjI0bDUuNDYgNC43M0w1LjgyIDIxeiIvPjwvc3ZnPg==";
+
+/* =========================================================
+   PILIH MODE
+   ========================================================= */
+document.querySelectorAll('[data-mode]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    mode = btn.dataset.mode;
+    startScreen.style.display = 'none';
+    container.innerHTML = '';
+    current = 0; score = 0;
+    answers = new Array(questions.length).fill(null);
+    matchState = null; dragState = null;
+    progressWrap.style.display = 'flex';
+
+    if (mode === 'pg') {
+      slideNav.style.display = 'flex';
+      renderSlides();
+      tampilkanSlide(0, 'next');
+    } else {
+      renderMatching();
+    }
+  });
+});
+
+/* =========================================================
+   MODE PILIHAN GANDA
+   ========================================================= */
+function renderSlides() {
+  container.innerHTML = "";
+  questions.forEach((item, qi) => {
+    const slide = document.createElement("div");
+    slide.className = "quiz-slide";
+    slide.dataset.index = qi;
+
+    const card = document.createElement("div");
+    card.className = "quiz-card";
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.innerHTML = `<span class="num">${qi + 1}</span>${item.q}`;
+    card.appendChild(q);
+
+    item.options.forEach((opt, oi) => {
+      const div = document.createElement("div");
+      div.className = "option";
+      div.dataset.oi = oi;
+      div.innerHTML = `<span class="letter">${LETTERS[oi]}.</span><span>${opt}</span>`;
+      div.addEventListener("click", () => pilihJawaban(qi, oi, div));
+      card.appendChild(div);
+    });
+
+    const fb = document.createElement("div");
+    fb.className = "feedback";
+    card.appendChild(fb);
+
+    slide.appendChild(card);
+    container.appendChild(slide);
+  });
+}
+
+function pilihJawaban(qi, oi, el) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+
+  const card = container.children[qi].querySelector(".quiz-card");
+  const opts = card.querySelectorAll(".option");
+  const fb = card.querySelector(".feedback");
+  const item = questions[qi];
+
+  opts.forEach(o => o.classList.add("disabled"));
+
+  if (oi === item.answer) {
+    score++;
+    el.classList.add("correct");
+    fb.className = "feedback ok show";
+    fb.innerHTML = `<b>✅ Benar! Hebat sekali! </b>${item.ok}`;
+    playCorrect();
+  } else {
+    el.classList.add("wrong");
+    opts[item.answer].classList.add("correct");
+    fb.className = "feedback no show";
+    fb.innerHTML = `<b>❌ Belum tepat. </b>${item.no}`;
+    playWrong();
+  }
+  btnNext.disabled = false;
+}
+
+function tampilkanSlide(index, arah = "next") {
+  const slides = container.querySelectorAll(".quiz-slide");
+  slides.forEach(s => s.classList.remove("active", "back"));
+  const slide = slides[index];
+  slide.classList.add("active");
+  if (arah === "back") slide.classList.add("back");
+
+  progressFill.style.width = ((index + 1) / questions.length * 100) + "%";
+  progressText.textContent = (index + 1) + " / " + questions.length;
+
+  btnPrev.disabled = index === 0;
+
+  const sudahJawab = answers[index] !== null;
+  if (index < questions.length - 1) {
+    btnNext.textContent = "Selanjutnya →";
+    btnNext.disabled = !sudahJawab;
+  } else {
+    if (sudahJawab) {
+      btnNext.textContent = "Lihat Skor 🏆";
+      btnNext.disabled = false;
+    } else {
+      btnNext.textContent = "Selanjutnya →";
+      btnNext.disabled = true;
+    }
+  }
+}
+
+/* =========================================================
+   MODE MENJODOHKAN (tarik garis)
+   ========================================================= */
+function renderMatching() {
+  container.innerHTML = '';
+  slideNav.style.display = 'none';
+
+  // Acak kolom kanan
+  const rightItems = matchPairs.map((p, i) => ({ label: p.right, origIdx: i }));
+  for (let i = rightItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rightItems[i], rightItems[j]] = [rightItems[j], rightItems[i]];
+  }
+
+  matchState = {
+    matchedCount: 0,
+    wrongAttempts: {},
+    drawnLines: []
+  };
+
+  progressFill.style.width = '0%';
+  progressText.textContent = '0 / ' + matchPairs.length;
+
+  const slide = document.createElement('div');
+  slide.className = 'quiz-slide active';
+  slide.innerHTML = `
+    <div class="match-card">
+      <div class="match-instructions">Tarik garis dari alat indra di kiri ke fungsinya di kanan!</div>
+      <div class="match-grid">
+        <div class="match-col" id="matchLeft"></div>
+        <div class="match-col" id="matchRight"></div>
+      </div>
+      <svg class="match-svg" id="matchSvg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
+    </div>
+  `;
+  container.appendChild(slide);
+
+  const leftCol = slide.querySelector('#matchLeft');
+  matchPairs.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'match-item match-item-left';
+    el.dataset.side = 'left';
+    el.dataset.idx = i;
+    el.innerHTML = `
+      <div class="match-icon">
+        <img src="${p.img}" alt="${p.label}">
+      </div>
+      <div class="match-label">${p.label}</div>
+    `;
+    el.addEventListener('pointerdown', (e) => startDrag(e, el));
+    leftCol.appendChild(el);
+  });
+
+  const rightCol = slide.querySelector('#matchRight');
+  rightItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item match-item-right';
+    el.dataset.side = 'right';
+    el.dataset.pair = item.origIdx;
+    el.textContent = item.label;
+    rightCol.appendChild(el);
+  });
+}
+
+/* ---------- util koordinat ---------- */
+function getRelativePos(e, svgEl) {
+  const r = svgEl.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+function getItemCenter(el, svgEl) {
+  const r = el.getBoundingClientRect();
+  const s = svgEl.getBoundingClientRect();
+  return { x: r.left + r.width / 2 - s.left, y: r.top + r.height / 2 - s.top };
+}
+
+/* ---------- drag untuk menggambar garis ---------- */
+function startDrag(e, leftEl) {
+  if (!matchState) return;
+  if (leftEl.classList.contains('matched')) return;
+  e.preventDefault();
+
+  const svgEl = document.getElementById('matchSvg');
+  if (!svgEl) return;
+
+  document.querySelectorAll('.match-item.selected').forEach(x => x.classList.remove('selected'));
+  leftEl.classList.add('selected');
+
+  const start = getItemCenter(leftEl, svgEl);
+
+  const temp = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  temp.setAttribute('stroke', '#f0b429');
+  temp.setAttribute('stroke-width', '4');
+  temp.setAttribute('stroke-linecap', 'round');
+  temp.setAttribute('stroke-dasharray', '8 6');
+  temp.setAttribute('x1', start.x);
+  temp.setAttribute('y1', start.y);
+  temp.setAttribute('x2', start.x);
+  temp.setAttribute('y2', start.y);
+  svgEl.appendChild(temp);
+
+  dragState = { leftEl, svgEl, temp, pointerId: e.pointerId };
+
+  try { leftEl.setPointerCapture(e.pointerId); } catch (_) {}
+  leftEl.addEventListener('pointermove', onDragMove);
+  leftEl.addEventListener('pointerup', onDragEnd);
+  leftEl.addEventListener('pointercancel', onDragEnd);
+
+  playClick();
+}
+
+function onDragMove(e) {
+  if (!dragState) return;
+  e.preventDefault();
+  const pos = getRelativePos(e, dragState.svgEl);
+  dragState.temp.setAttribute('x2', pos.x);
+  dragState.temp.setAttribute('y2', pos.y);
+}
+
+function onDragEnd(e) {
+  if (!dragState) return;
+  const { leftEl, svgEl, temp, pointerId } = dragState;
+
+  leftEl.removeEventListener('pointermove', onDragMove);
+  leftEl.removeEventListener('pointerup', onDragEnd);
+  leftEl.removeEventListener('pointercancel', onDragEnd);
+  try { leftEl.releasePointerCapture(pointerId); } catch (_) {}
+
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  const target = under && under.closest ? under.closest('.match-item[data-side="right"]') : null;
+
+  if (temp.parentNode) temp.parentNode.removeChild(temp);
+  dragState = null;
+
+  if (!target || target.classList.contains('matched')) {
+    leftEl.classList.remove('selected');
+    return;
+  }
+
+  checkMatch(leftEl, target);
+}
+
+/* ---------- cek pasangan ---------- */
+function checkMatch(leftEl, target) {
+  const leftIdx = parseInt(leftEl.dataset.idx, 10);
+  const rightPair = parseInt(target.dataset.pair, 10);
+  const svgEl = document.getElementById('matchSvg');
+  if (!svgEl) return;
+
+  if (leftIdx === rightPair) {
+    leftEl.classList.remove('selected');
+    leftEl.classList.add('matched');
+    target.classList.add('matched');
+
+    const start = getItemCenter(leftEl, svgEl);
+    const end = getItemCenter(target, svgEl);
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('stroke', '#4caf50');
+    line.setAttribute('stroke-width', '5');
+    line.setAttribute('stroke-linecap', 'round');
+    line.setAttribute('x1', start.x);
+    line.setAttribute('y1', start.y);
+    line.setAttribute('x2', end.x);
+    line.setAttribute('y2', end.y);
+    svgEl.appendChild(line);
+
+    matchState.drawnLines.push({ leftEl, rightEl: target, lineEl: line });
+    matchState.matchedCount++;
+    if (matchState.wrongAttempts[leftIdx] === undefined) matchState.wrongAttempts[leftIdx] = 0;
+    playCorrect();
+
+    progressFill.style.width = (matchState.matchedCount / matchPairs.length * 100) + '%';
+    progressText.textContent = matchState.matchedCount + ' / ' + matchPairs.length;
+
+    if (matchState.matchedCount === matchPairs.length) {
+      setTimeout(tampilkanSkorMatching, 700);
+    }
+  } else {
+    matchState.wrongAttempts[leftIdx] = (matchState.wrongAttempts[leftIdx] || 0) + 1;
+    leftEl.classList.add('wrong-flash');
+    target.classList.add('wrong-flash');
+    playWrong();
+
+    setTimeout(() => {
+      leftEl.classList.remove('wrong-flash', 'selected');
+      target.classList.remove('wrong-flash');
+    }, 520);
+  }
+}
+
+/* ---------- redraw garis saat window resize ---------- */
+window.addEventListener('resize', () => {
+  if (!matchState || !matchState.drawnLines.length) return;
+  const svgEl = document.getElementById('matchSvg');
+  if (!svgEl) return;
+  matchState.drawnLines.forEach(({ leftEl, rightEl, lineEl }) => {
+    const s = getItemCenter(leftEl, svgEl);
+    const e = getItemCenter(rightEl, svgEl);
+    lineEl.setAttribute('x1', s.x);
+    lineEl.setAttribute('y1', s.y);
+    lineEl.setAttribute('x2', e.x);
+    lineEl.setAttribute('y2', e.y);
+  });
+});
+
+/* =========================================================
+   SKOR
+   ========================================================= */
+function tampilkanSkorPG() {
+  const total = Math.round(score / questions.length * 100);
+  tampilkanSkorUmum(total, `Benar ${score} dari ${questions.length} soal`);
+}
+
+function tampilkanSkorMatching() {
+  let points = 0;
+  matchPairs.forEach((_, i) => {
+    points += (matchState.wrongAttempts[i] || 0) === 0 ? 1 : 0.5;
+  });
+  const total = Math.round(points / matchPairs.length * 100);
+  tampilkanSkorUmum(total, `${matchPairs.length} pasangan berhasil dijodohkan`);
+}
+
+function tampilkanSkorUmum(total, smallText) {
+  container.innerHTML = '';
+
+  let starCount = 1, msg = "";
+  if (total === 100)    { starCount = 5; msg = "Sempurna! Kamu luar biasa!"; }
+  else if (total >= 80) { starCount = 4; msg = "Hebat! Pemahamanmu sangat baik. Pertahankan ya!"; }
+  else if (total >= 60) { starCount = 3; msg = "Bagus! Sedikit lagi belajar, kamu pasti bisa lebih baik!"; }
+  else if (total >= 40) { starCount = 2; msg = "Semangat! Coba baca lagi materinya, lalu ulangi latihan ini."; }
+  else                  { starCount = 1; msg = "Jangan menyerah! Pelajari kembali materi indra kita, lalu coba lagi ya!"; }
+
+  let starsHtml = "";
+  for (let i = 0; i < starCount; i++) {
+    starsHtml += `<img src="${STAR_SVG}" alt="Bintang" class="star-img">`;
+  }
+
+  const scoreScreen = document.createElement("div");
+  scoreScreen.className = "quiz-slide active";
+  scoreScreen.innerHTML = `
+    <div class="score-screen">
+      <div class="stars-img">${starsHtml}</div>
+      <div class="label">Total Skor Kamu</div>
+      <div class="big">${total} / 100</div>
+      <div class="msg">${msg}<br><small>${smallText}</small></div>
+      <div class="score-buttons">
+        <button class="btn-slide" id="btnUlangi" style="max-width:200px;">Ulangi</button>
+        <button class="btn-slide btn-menu-score" id="btnGantiMode" style="max-width:200px;">Ganti Mode</button>
+        <a href="index.html" class="btn-slide btn-menu-score" style="max-width:200px;">Menu Utama</a>
+      </div>
+    </div>
+  `;
+  container.appendChild(scoreScreen);
+
+  progressWrap.style.display = "none";
+  slideNav.style.display = "none";
+
+  document.getElementById("btnUlangi").addEventListener("click", resetQuiz);
+  document.getElementById("btnGantiMode").addEventListener("click", backToModeSelection);
+
+  playFinish();
+}
+
+/* =========================================================
+   RESET & NAVIGASI
+   ========================================================= */
+function resetQuiz() {
+  container.innerHTML = '';
+  progressWrap.style.display = 'flex';
+  progressFill.style.width = '0%';
+
+  if (mode === 'pg') {
+    current = 0;
+    answers = new Array(questions.length).fill(null);
+    score = 0;
+    slideNav.style.display = 'flex';
+    renderSlides();
+    tampilkanSlide(0, 'next');
+  } else if (mode === 'match') {
+    renderMatching();
+  }
+}
+
+function backToModeSelection() {
+  container.innerHTML = '';
+  progressWrap.style.display = 'none';
+  slideNav.style.display = 'none';
+  startScreen.style.display = 'flex';
+  mode = null;
+  matchState = null;
+  dragState = null;
+}
+
+btnNext.addEventListener("click", () => {
+  if (mode !== 'pg') return;
+  if (current === questions.length - 1 && answers[current] !== null) {
+    tampilkanSkorPG();
+    return;
+  }
+  if (current < questions.length - 1) {
+    current++;
+    tampilkanSlide(current, "next");
+  }
+});
+
+btnPrev.addEventListener("click", () => {
+  if (mode !== 'pg') return;
+  if (current > 0) {
+    current--;
+    tampilkanSlide(current, "back");
+  }
+});
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

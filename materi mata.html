@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi - Menu Belajar</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* CSS untuk mengatur posisi gambar di kanan */
+  .info-flex {
+    display: flex;             /* Mengaktifkan flexbox */
+    align-items: center;       /* Membuat gambar & teks sejajar di tengah secara vertikal */
+    gap: 10px;                 /* Jarak antara teks dan gambar */
+    justify-content: space-between;
+  }
+
+  .info-flex ul {
+    flex: 1;                   /* Teks mengambil ruang yang tersisa di kiri */
+    margin: 0;
+    padding-left: 20px;        /* Menyesuaikan padding list */
+  }
+
+  .side-image {
+    width: 140px;              /* Lebar gambar di kotak merah (bisa disesuaikan) */
+    height: auto;              /* Tinggi menyesuaikan proporsi */
+    border-radius: 8px;        /* Membuat sudut gambar sedikit melengkung */
+    object-fit: contain;
+  }
+
+  /* Agar tampilan tetap rapi di HP (layar kecil) */
+  @media (max-width: 600px) {
+    .info-flex {
+      flex-direction: column;  /* Jika di HP, gambar pindah ke bawah teks */
+    }
+    .side-image {
+      width: 80%;              /* Gambar jadi lebih besar di HP */
+      margin-top: 15px;
+    }
+  }
+</style>
+</head>
+<body data-page="materi">
+
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+<div class="cloud cloud3"></div>
+<div class="cloud cloud4"></div>
+<div class="sun"></div>
+<div class="butterfly b1"></div>
+<div class="butterfly b2"></div>
+
+<div class="ground">
+  <div class="soil"></div>
+  <div class="grass-back"></div>
+  <div class="grass-front"></div>
+  <div class="flower-css pink f1"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css yellow f2"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css purple f3"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css red f4"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css orange f5"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css blue f6"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+  <div class="flower-css white f7"><div class="stem"></div><div class="leaf left"></div><div class="leaf right"></div><div class="bloom"></div></div>
+</div>
+
+<div class="content-wrapper">
+  <div class="content-box">
+    <h2 class="page-title">Mata - Sang Pengamat</h2>
+
+    <div class="info-box green" style="margin-top: 20px;">
+      <!-- Bagian Flexbox: Teks di kiri, Gambar di kanan -->
+      <div class="info-flex">
+        <ul>
+          <li>Terletak di depan kepala, berjumlah sepasang.</li>
+          <li>Membantu kita melihat warna, bentuk, dan gerakan benda. </li>
+          <li>Tanpa fngsi mata yang baik, kita tidak bisa melihat pelangi, melihat wajah teman, atau membaca buku. </li>
+          <li>Mata menangkap cahaya dan gambar, lalu mengirimkan pesan ke otak agar kita tau apa yang kita lihat. </li>
+        </ul>
+        
+        <!-- Gambar diletakkan di sini (area kotak merah) -->
+        <img src="mata.png" alt="Gambar KTP" class="side-image">
+      </div>
+    </div>
+
+    <span class="highlight" style="color: #10A37F;">
+      Bacalah dengan teliti dan catat hal penting!
+    </span>
+
+    <div class="nav-buttons">
+      <a href="index.html" class="btn btn-home">Menu Utama</a>
+      <a href="materi telinga.html" class="btn btn-next">Selanjutnya →</a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
