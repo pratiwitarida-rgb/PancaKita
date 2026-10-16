@@ -1007,62 +1007,114 @@ header .subtitle { font-size: 1.35rem; }
   .content-box p, .content-box li { font-size: 0.95rem; line-height: 1.7; }
   .btn { font-size: 0.95rem; padding: 11px 18px; }
 }
-
 /* =========================================================
-   TAB LATIHAN LEBIH LEBAR
+   TAB LATIHAN MELEBAR SAMPAI TEPI
    (tempel di PALING BAWAH style.css)
    ========================================================= */
 
-/* Tombol Pilihan Ganda & Menjodohkan */
+/* Wadah tombol mode — full width */
+.mode-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Tombol Pilihan Ganda & Menjodohkan — melebar ke tepi */
 .mode-buttons .btn-slide {
-  min-width: 260px;
-  max-width: 340px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+  padding: 20px 30px;
+  font-size: 1.3rem;
+  border-radius: 60px;
 }
 
-/* Tombol Sebelumnya & Selanjutnya */
+/* Wadah navigasi slide — full width */
+.slide-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+/* Tombol Sebelumnya & Selanjutnya — melebar ke tepi */
 .slide-nav .btn-slide {
-  min-width: 240px;
-  max-width: 320px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  padding: 18px 24px;
+  font-size: 1.25rem;
+  border-radius: 60px;
 }
 
-/* Laptop besar */
+/* ---------- Laptop besar (≥ 1400px) ---------- */
 @media (min-width: 1400px) {
-  .mode-buttons .btn-slide { min-width: 300px; max-width: 380px; }
-  .slide-nav .btn-slide    { min-width: 280px; max-width: 360px; }
+  .mode-buttons { gap: 18px; }
+  .mode-buttons .btn-slide { padding: 24px 40px; font-size: 1.5rem; }
+  .slide-nav { gap: 18px; margin-top: 24px; }
+  .slide-nav .btn-slide { padding: 22px 32px; font-size: 1.45rem; }
 }
 
-/* Laptop standar */
+/* ---------- Laptop standar (1181px – 1399px) ---------- */
 @media (min-width: 1181px) and (max-width: 1399px) {
-  .mode-buttons .btn-slide { min-width: 280px; max-width: 360px; }
-  .slide-nav .btn-slide    { min-width: 260px; max-width: 340px; }
+  .mode-buttons { gap: 16px; }
+  .mode-buttons .btn-slide { padding: 22px 36px; font-size: 1.45rem; }
+  .slide-nav { gap: 16px; margin-top: 22px; }
+  .slide-nav .btn-slide { padding: 20px 30px; font-size: 1.4rem; }
 }
 
-/* iPad Pro / tablet besar */
+/* ---------- iPad Pro / tablet besar (1024px – 1180px) ---------- */
 @media (min-width: 1024px) and (max-width: 1180px) {
-  .mode-buttons .btn-slide { min-width: 260px; max-width: 340px; }
-  .slide-nav .btn-slide    { min-width: 240px; max-width: 320px; }
+  .mode-buttons { gap: 14px; }
+  .mode-buttons .btn-slide { padding: 22px 34px; font-size: 1.4rem; }
+  .slide-nav { gap: 14px; margin-top: 20px; }
+  .slide-nav .btn-slide { padding: 20px 28px; font-size: 1.35rem; }
 }
 
-/* iPad / tablet sedang */
+/* ---------- iPad / tablet sedang (769px – 1023px) ---------- */
 @media (min-width: 769px) and (max-width: 1023px) {
-  .mode-buttons .btn-slide { min-width: 230px; max-width: 300px; }
-  .slide-nav .btn-slide    { min-width: 210px; max-width: 280px; }
+  .mode-buttons { gap: 12px; }
+  .mode-buttons .btn-slide { padding: 20px 28px; font-size: 1.3rem; }
+  .slide-nav { gap: 12px; margin-top: 18px; }
+  .slide-nav .btn-slide { padding: 18px 24px; font-size: 1.25rem; }
 }
 
-/* iPad Mini / tablet kecil */
+/* ---------- iPad Mini / tablet kecil (701px – 768px) ---------- */
 @media (min-width: 701px) and (max-width: 768px) {
-  .mode-buttons .btn-slide { min-width: 210px; max-width: 280px; }
-  .slide-nav .btn-slide    { min-width: 200px; max-width: 260px; }
+  .mode-buttons { gap: 10px; }
+  .mode-buttons .btn-slide { padding: 18px 24px; font-size: 1.22rem; }
+  .slide-nav { gap: 10px; margin-top: 16px; }
+  .slide-nav .btn-slide { padding: 17px 20px; font-size: 1.18rem; }
 }
 
-/* HP besar */
+/* ---------- HP besar (481px – 700px) ---------- */
 @media (min-width: 481px) and (max-width: 700px) {
-  .mode-buttons .btn-slide { min-width: 200px; max-width: 260px; }
-  .slide-nav .btn-slide    { min-width: 180px; max-width: 240px; }
+  .mode-buttons { gap: 10px; flex-wrap: wrap; }
+  .mode-buttons .btn-slide { padding: 17px 22px; font-size: 1.15rem; }
+  .slide-nav { gap: 10px; margin-top: 16px; }
+  .slide-nav .btn-slide { padding: 16px 18px; font-size: 1.1rem; }
 }
 
-/* HP — tetap full width biar pas */
+/* ---------- HP (≤ 480px) ---------- */
 @media (max-width: 480px) {
-  .mode-buttons .btn-slide { min-width: 100%; max-width: 340px; }
-  .slide-nav .btn-slide    { min-width: 0; max-width: none; flex: 1; }
+  .mode-buttons { gap: 10px; flex-wrap: wrap; }
+  .mode-buttons .btn-slide {
+    padding: 16px 18px; font-size: 1.08rem;
+    flex: 1 1 100%;
+  }
+  .slide-nav { gap: 10px; margin-top: 14px; flex-wrap: nowrap; }
+  .slide-nav .btn-slide { padding: 15px 14px; font-size: 1rem; }
+}
+
+/* ---------- HP kecil (≤ 380px) ---------- */
+@media (max-width: 380px) {
+  .mode-buttons .btn-slide { padding: 15px 14px; font-size: 1rem; }
+  .slide-nav .btn-slide { padding: 13px 10px; font-size: 0.92rem; }
 }
