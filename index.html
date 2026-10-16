@@ -173,13 +173,20 @@ body {
   50%      { transform: rotate(0.8deg); }
 }
 
-.tree-left-1 { left: -40px; transform: scale(1.05); animation-delay: 0s; }
-.tree-left-2 { left: 70px;  transform: scale(0.8);  animation-delay: -1.5s; z-index: 0; }
-.tree-left-3 { left: 10px;  transform: scale(0.65); animation-delay: -3s;   z-index: 0; opacity: 0.9; }
+/* =========================================================
+   POSISI POHON — DIPERBANYAK (kiri 5, kanan 5)
+   ========================================================= */
+.tree-left-1  { left: -40px; transform: scale(1.05); animation-delay: 0s; }
+.tree-left-2  { left: 70px;  transform: scale(0.85); animation-delay: -1.5s; z-index: 0; }
+.tree-left-3  { left: 10px;  transform: scale(0.65); animation-delay: -3s;   z-index: 0; opacity: 0.9; }
+.tree-left-4  { left: 155px; transform: scale(0.55); animation-delay: -4.2s; z-index: 0; opacity: 0.85; }
+.tree-left-5  { left: -20px; transform: scale(0.5);  animation-delay: -2.1s; z-index: 0; opacity: 0.8; }
 
 .tree-right-1 { right: -40px; transform: scale(1.05); animation-delay: -0.8s; }
-.tree-right-2 { right: 70px;  transform: scale(0.8);  animation-delay: -2.3s; z-index: 0; }
+.tree-right-2 { right: 70px;  transform: scale(0.85); animation-delay: -2.3s; z-index: 0; }
 .tree-right-3 { right: 10px;  transform: scale(0.65); animation-delay: -3.8s; z-index: 0; opacity: 0.9; }
+.tree-right-4 { right: 155px; transform: scale(0.55); animation-delay: -4.7s; z-index: 0; opacity: 0.85; }
+.tree-right-5 { right: -20px; transform: scale(0.5);  animation-delay: -1.4s; z-index: 0; opacity: 0.8; }
 
 /* ============================================ */
 /* ============== TANAH + RUMPUT ============== */
@@ -361,20 +368,19 @@ body {
   50%      { transform: translateY(-6px); }
 }
 
-/* === JUDUL: UKURAN TETAP (tidak fleksibel) === */
 .app-name {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;       /* tidak boleh turun baris */
-  white-space: nowrap;     /* kunci ukuran tetap */
-  gap: 6px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 8px;
   line-height: 1;
   position: relative;
   z-index: 2;
 }
 
-/* ============ HURUF INDRAKITA (RAINBOW, TANPA OUTLINE) ============ */
+/* ============ HURUF INDRAKITA — DIPERBESAR ============ */
 .app-name span {
   --c1: #FF8A80;
   --c2: #FF3D3D;
@@ -383,7 +389,7 @@ body {
   --rot: 0deg;
 
   font-family: 'Baloo 2', cursive;
-  font-size: 6.5rem;       /* UKURAN TETAP, tidak berubah di media query */
+  font-size: 9rem;         /* ⬅ DIPERBESAR (dari 6.5rem) */
   font-weight: 800;
   text-transform: uppercase;
   display: inline-block;
@@ -397,9 +403,9 @@ body {
   -webkit-text-fill-color: transparent;
 
   text-shadow:
-    0 4px 0 var(--c3),
-    0 8px 0 rgba(0,0,0,0.18),
-    0 16px 22px rgba(0,0,0,0.42);
+    0 5px 0 var(--c3),
+    0 10px 0 rgba(0,0,0,0.18),
+    0 20px 26px rgba(0,0,0,0.42);
 
   transform: translateY(var(--ty)) rotate(var(--rot));
   animation: letterBob 3.5s ease-in-out infinite;
@@ -410,7 +416,6 @@ body {
   50%      { transform: translateY(calc(var(--ty) - 8px)) rotate(var(--rot)); }
 }
 
-/* ---- Warna + posisi tiap huruf (rainbow) ---- */
 .app-name .l1 { --c1:#FF8A80; --c2:#FF3D3D; --c3:#B71C1C; --ty:-8px;  --rot:-6deg; animation-delay: 0s;   }
 .app-name .l2 { --c1:#FFB74D; --c2:#FF8F00; --c3:#E65100; --ty:10px;  --rot:4deg;  animation-delay: 0.2s; }
 .app-name .l3 { --c1:#FFE082; --c2:#FFC107; --c3:#F57F17; --ty:-12px; --rot:-3deg; animation-delay: 0.4s; }
@@ -433,7 +438,7 @@ body {
 .start-inner {
   margin: auto;
   width: 100%;
-  max-width: 780px;
+  max-width: 980px;
   text-align: center;
   animation: fadeDown 0.9s ease;
   position: relative;
@@ -444,23 +449,22 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ TOMBOL MULAI BELAJAR (di bawah INDRAKITA) ============ */
+/* ============ TOMBOL MULAI BELAJAR ============ */
 .btn-start {
   font-family: 'Baloo 2', cursive;
-  font-size: 1.35rem;
+  font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: 1px;
   color: #fff;
-  padding: 16px 42px;
+  padding: 20px 52px;
   border-radius: 60px;
   border: none;
   outline: none;
   cursor: pointer;
 
-  /* === POSISI DI BAWAH JUDUL === */
   position: relative;
   display: inline-block;
-  margin-top: 40px;       /* jarak dari judul INDRAKITA */
+  margin-top: 44px;
 
   background: linear-gradient(180deg, #4CD137 0%, #2E8B20 100%);
   box-shadow: 
@@ -487,13 +491,21 @@ body {
   50%      { transform: translateY(-6px); }
 }
 
-/* ============ RESPONSIVE (hanya dekorasi, judul & tombol tidak berubah) ============ */
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1200px) {
+  .app-name span { font-size: 7.5rem; }
+}
+
 @media (max-width: 900px) {
+  .app-name span { font-size: 6.5rem; }
+  .tree-left-4, .tree-left-5,
+  .tree-right-4, .tree-right-5 { display: none; }
   .tree-left-3, .tree-right-3 { display: none; }
 }
 
 @media (max-width: 700px) {
-  /* Judul & tombol sengaja TIDAK diubah ukurannya */
+  .app-name span { font-size: 4.5rem; }
+  .btn-start { font-size: 1.25rem; padding: 16px 38px; margin-top: 32px; }
 
   .sun { width: 70px; height: 70px; top: 15px; right: 15px; }
   .ground { height: 130px; }
@@ -502,10 +514,8 @@ body {
 
   .tree-left-1  { transform: scale(0.75); left: -50px; }
   .tree-left-2  { display: none; }
-  .tree-left-3  { display: none; }
   .tree-right-1 { transform: scale(0.75); right: -50px; }
   .tree-right-2 { display: none; }
-  .tree-right-3 { display: none; }
 
   .cloud1 { width: 110px; height: 110px; }
   .cloud1::before { width: 80px; height: 80px; top: -28px; left: 55px; }
@@ -521,9 +531,20 @@ body {
   .cloud4::after  { width: 72px; height: 72px; top: 15px; left: -30px; }
 }
 
+@media (max-width: 480px) {
+  .app-name span { font-size: 3.2rem; }
+  .app-name { gap: 3px; }
+  .btn-start { font-size: 1.15rem; padding: 15px 32px; }
+}
+
 @media (max-width: 400px) {
+  .app-name span { font-size: 2.7rem; }
   .tree-left-1  { transform: scale(0.55); left: -60px; }
   .tree-right-1 { transform: scale(0.55); right: -60px; }
+}
+
+@media (max-width: 360px) {
+  .app-name span { font-size: 2.3rem; }
 }
 </style>
 </head>
@@ -537,8 +558,23 @@ body {
 <div class="cloud cloud4"></div>
 <div class="sun"></div>
 
-<!-- ================= HUTAN ================= -->
+<!-- ================= HUTAN (DIPERBANYAK) ================= -->
 <div class="forest">
+  <!-- SISI KIRI -->
+  <div class="tree tree-left-5">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+  </div>
+  <div class="tree tree-left-4">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fa"></div>
+    <div class="fruit fc"></div>
+  </div>
   <div class="tree tree-left-3">
     <div class="trunk"></div>
     <div class="leaf-layer leaf-1"></div>
@@ -564,6 +600,21 @@ body {
     <div class="fruit fd"></div>
   </div>
 
+  <!-- SISI KANAN -->
+  <div class="tree tree-right-5">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+  </div>
+  <div class="tree tree-right-4">
+    <div class="trunk"></div>
+    <div class="leaf-layer leaf-1"></div>
+    <div class="leaf-layer leaf-2"></div>
+    <div class="leaf-layer leaf-3"></div>
+    <div class="fruit fb"></div>
+    <div class="fruit fd"></div>
+  </div>
   <div class="tree tree-right-3">
     <div class="trunk"></div>
     <div class="leaf-layer leaf-1"></div>
