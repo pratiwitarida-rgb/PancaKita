@@ -84,10 +84,19 @@
   body[data-sense-active="lidah"]   .sense-title-box { background: #FFF0F6; border-left-color: #FF6B9D; }
   body[data-sense-active="kulit"]   .sense-title-box { background: #F3F0FF; border-left-color: #A29BFE; }
 
+  /* ⬇ TAMBAHAN: Deskripsi singkat di dalam judul */
+  .sense-desc {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4a5568;
+    font-weight: 500;
+  }
+
   /* Viewer 3D */
   .viewer-3d {
     position: relative;
-    background: linear-gradient(180deg, #EAF6FF 0%, #D6ECFF 100%);
+    background: linear-gradient(180deg, #0e6d9d 0%, #084868 100%);
     border: 5px solid #74B9FF;
     border-radius: 25px;
     overflow: hidden;
@@ -179,6 +188,7 @@
     .sense-tab { font-size: 0.78rem; padding: 7px 12px; border-width: 3px; }
     .sense-title-box h3 { font-size: 1.05rem; }
     .sense-title-box { padding: 10px 14px; margin-bottom: 12px; }
+    .sense-desc { font-size: 0.85rem; }
     .viewer-hint { font-size: 0.68rem; padding: 4px 10px; }
   }
 </style>
@@ -228,9 +238,10 @@
       <button class="sense-tab" data-sense="kulit">Kulit</button>
     </div>
 
-    <!-- ✅ Judul indra -->
+    <!-- ✅ Judul + deskripsi indra -->
     <div class="sense-title-box">
       <h3 id="sense-title">Mata — Indra Penglihatan</h3>
+      <p class="sense-desc" id="sense-desc">Dengan mata kita dapat melihat warna, bentuk, dan gerakan benda di sekitar kita.</p>
     </div>
 
     <!-- Viewer 3D -->
@@ -257,12 +268,6 @@
 <script>
 /* ==========================================================
    RUANG INDRA — 3D Viewer (Three.js + GLTFLoader)
-   ----------------------------------------------------------
-   Cara pakai aset 3D sendiri:
-   1. Taruh file .glb di folder: assets/models/
-   2. Nama file sesuai: mata.glb, telinga.glb, hidung.glb,
-      lidah.glb, kulit.glb
-   3. Selesai! Model akan otomatis dimuat.
 ========================================================== */
 (function initRuangIndra() {
   const canvas = document.getElementById('canvas-3d');
@@ -319,13 +324,28 @@
   controls.minDistance = 3;
   controls.maxDistance = 12;
 
-  /* ---------- Info judul ---------- */
+  /* ---------- Info judul + deskripsi ---------- */
   const INFO = {
-    mata:    { title: 'Mata — Indra Penglihatan' },
-    telinga: { title: 'Telinga — Indra Pendengaran' },
-    hidung:  { title: 'Hidung — Indra Penciuman' },
-    lidah:   { title: 'Lidah — Indra Pengecap' },
-    kulit:   { title: 'Kulit — Indra Peraba' }
+    mata:    {
+      title: 'Mata — Indra Penglihatan',
+      desc:  'Dengan mata kita dapat melihat warna, bentuk, dan gerakan benda di sekitar kita.'
+    },
+    telinga: {
+      title: 'Telinga — Indra Pendengaran',
+      desc:  'Dengan telinga kita dapat mendengar suara, musik, dan bunyi-bunyi di sekitar kita.'
+    },
+    hidung:  {
+      title: 'Hidung — Indra Penciuman',
+      desc:  'Dengan hidung kita dapat mencium bau harum bunga dan bau tidak sedap di sekitar.'
+    },
+    lidah:   {
+      title: 'Lidah — Indra Pengecap',
+      desc:  'Dengan lidah kita dapat merasakan rasa manis, asin, asam, dan pahit pada makanan.'
+    },
+    kulit:   {
+      title: 'Kulit — Indra Peraba',
+      desc:  'Dengan kulit kita dapat merasakan panas, dingin, halus, dan kasar pada benda.'
+    }
   };
 
   /* ---------- Preset kamera per model ---------- */
@@ -340,8 +360,8 @@
   /* ==================================================
      LOADER — Custom 3D (.glb)
   ================================================== */
-  const loadedModels = {}; // model yang sudah siap dipakai
-  const mixers = {};       // animasi mixer per model
+  const loadedModels = {};
+  const mixers = {};
   let currentModel = null;
   let pendingName = 'mata';
 
@@ -369,7 +389,6 @@
       (gltf) => {
         const model = gltf.scene;
 
-        // Auto-fit ukuran & posisi (skala ~3 unit, terpusat di origin)
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
@@ -378,10 +397,6 @@
 
         model.position.sub(center);
         model.scale.setScalar(targetSize / maxDim);
-
-        // Perbaiki orientasi umum (Blender export sering miring)
-        // Uncomment baris di bawah jika model tampak rebah:
-        // model.rotation.x = -Math.PI / 2;
 
         model.traverse(o => {
           if (o.isMesh) {
@@ -393,7 +408,6 @@
           }
         });
 
-        // Animasi (jika ada)
         if (gltf.animations && gltf.animations.length > 0) {
           const mixer = new THREE.AnimationMixer(model);
           gltf.animations.forEach(clip => mixer.clipAction(clip).play());
@@ -402,7 +416,6 @@
 
         loadedModels[name] = model;
 
-        // Kalau tab ini yang sedang aktif, langsung tampilkan
         if (pendingName === name) showModel(name);
       },
       undefined,
@@ -420,8 +433,9 @@
   function showModel(name) {
     pendingName = name;
 
-    // Update UI tab & judul dulu
+    // Update UI judul + deskripsi + tab
     document.getElementById('sense-title').textContent = INFO[name].title;
+    document.getElementById('sense-desc').textContent  = INFO[name].desc;
     document.body.setAttribute('data-sense-active', name);
     document.querySelectorAll('.sense-tab').forEach(t => t.classList.remove('active'));
     const tab = document.querySelector(`.sense-tab[data-sense="${name}"]`);
@@ -429,7 +443,6 @@
 
     showError(null);
 
-    // Jika model belum siap, tampilkan loading & tunggu
     if (!loadedModels[name]) {
       showLoading(true);
       loadModel(name);
@@ -438,12 +451,10 @@
 
     showLoading(false);
 
-    // Ganti model di scene
     if (currentModel) scene.remove(currentModel);
     currentModel = loadedModels[name];
     scene.add(currentModel);
 
-    // Terapkan preset kamera jika ada
     const preset = CAMERA_PRESETS[name];
     if (preset) {
       camera.position.set(preset.pos[0], preset.pos[1], preset.pos[2]);
