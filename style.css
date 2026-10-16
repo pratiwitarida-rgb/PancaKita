@@ -1007,3 +1007,62 @@ header .subtitle { font-size: 1.35rem; }
   .content-box p, .content-box li { font-size: 0.95rem; line-height: 1.7; }
   .btn { font-size: 0.95rem; padding: 11px 18px; }
 }
+
+/* =========================================================
+   TAB LATIHAN LEBIH LEBAR
+   (tempel di PALING BAWAH style.css)
+   ========================================================= */
+
+/* Tombol Pilihan Ganda & Menjodohkan */
+.mode-buttons .btn-slide {
+  min-width: 260px;
+  max-width: 340px;
+}
+
+/* Tombol Sebelumnya & Selanjutnya */
+.slide-nav .btn-slide {
+  min-width: 240px;
+  max-width: 320px;
+}
+
+/* Laptop besar */
+@media (min-width: 1400px) {
+  .mode-buttons .btn-slide { min-width: 300px; max-width: 380px; }
+  .slide-nav .btn-slide    { min-width: 280px; max-width: 360px; }
+}
+
+/* Laptop standar */
+@media (min-width: 1181px) and (max-width: 1399px) {
+  .mode-buttons .btn-slide { min-width: 280px; max-width: 360px; }
+  .slide-nav .btn-slide    { min-width: 260px; max-width: 340px; }
+}
+
+/* iPad Pro / tablet besar */
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .mode-buttons .btn-slide { min-width: 260px; max-width: 340px; }
+  .slide-nav .btn-slide    { min-width: 240px; max-width: 320px; }
+}
+
+/* iPad / tablet sedang */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .mode-buttons .btn-slide { min-width: 230px; max-width: 300px; }
+  .slide-nav .btn-slide    { min-width: 210px; max-width: 280px; }
+}
+
+/* iPad Mini / tablet kecil */
+@media (min-width: 701px) and (max-width: 768px) {
+  .mode-buttons .btn-slide { min-width: 210px; max-width: 280px; }
+  .slide-nav .btn-slide    { min-width: 200px; max-width: 260px; }
+}
+
+/* HP besar */
+@media (min-width: 481px) and (max-width: 700px) {
+  .mode-buttons .btn-slide { min-width: 200px; max-width: 260px; }
+  .slide-nav .btn-slide    { min-width: 180px; max-width: 240px; }
+}
+
+/* HP — tetap full width biar pas */
+@media (max-width: 480px) {
+  .mode-buttons .btn-slide { min-width: 100%; max-width: 340px; }
+  .slide-nav .btn-slide    { min-width: 0; max-width: none; flex: 1; }
+}
