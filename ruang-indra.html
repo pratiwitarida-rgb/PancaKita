@@ -12,28 +12,30 @@
   .senses-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
     justify-content: center;
     margin-bottom: 22px;
   }
 
+  /* ⬇ TOMBOL TAB — diperbesar */
   .sense-tab {
     font-family: 'Baloo 2', cursive;
-    font-size: 0.9rem;
-    font-weight: 700;
-    padding: 9px 16px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    padding: 13px 26px;
     border-radius: 50px;
-    border: 3px solid #FFD93D;
+    border: 4px solid #FFD93D;
     background: #fff;
     color: #7A5C00;
     cursor: pointer;
-    box-shadow: 0 4px 0 #E8B92E;
+    box-shadow: 0 5px 0 #E8B92E;
     transition: all 0.2s;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
+    letter-spacing: 0.3px;
   }
-  .sense-tab:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #E8B92E; }
+  .sense-tab:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #E8B92E; }
   .sense-tab.active {
     transform: translateY(2px);
     box-shadow: 0 1px 0 rgba(0,0,0,0.15);
@@ -41,24 +43,24 @@
   }
 
   /* Variasi warna per tab */
-  .sense-tab[data-sense="mata"]    { border-color: #74B9FF; box-shadow: 0 4px 0 #2E7DD1; color: #1F5D9E; }
-  .sense-tab[data-sense="mata"]:hover { box-shadow: 0 6px 0 #2E7DD1; }
+  .sense-tab[data-sense="mata"]    { border-color: #74B9FF; box-shadow: 0 5px 0 #2E7DD1; color: #1F5D9E; }
+  .sense-tab[data-sense="mata"]:hover { box-shadow: 0 7px 0 #2E7DD1; }
   .sense-tab[data-sense="mata"].active { background: linear-gradient(180deg, #74B9FF, #0984E3); box-shadow: 0 2px 0 #0A5AA0; }
 
-  .sense-tab[data-sense="telinga"] { border-color: #FF9F43; box-shadow: 0 4px 0 #E17E20; color: #A85700; }
-  .sense-tab[data-sense="telinga"]:hover { box-shadow: 0 6px 0 #E17E20; }
+  .sense-tab[data-sense="telinga"] { border-color: #FF9F43; box-shadow: 0 5px 0 #E17E20; color: #A85700; }
+  .sense-tab[data-sense="telinga"]:hover { box-shadow: 0 7px 0 #E17E20; }
   .sense-tab[data-sense="telinga"].active { background: linear-gradient(180deg, #FFB347, #FF8C00); box-shadow: 0 2px 0 #A85A00; }
 
-  .sense-tab[data-sense="hidung"]  { border-color: #1DD1A1; box-shadow: 0 4px 0 #10A37F; color: #0B7A5E; }
-  .sense-tab[data-sense="hidung"]:hover { box-shadow: 0 6px 0 #10A37F; }
+  .sense-tab[data-sense="hidung"]  { border-color: #1DD1A1; box-shadow: 0 5px 0 #10A37F; color: #0B7A5E; }
+  .sense-tab[data-sense="hidung"]:hover { box-shadow: 0 7px 0 #10A37F; }
   .sense-tab[data-sense="hidung"].active { background: linear-gradient(180deg, #55EFC4, #00B894); box-shadow: 0 2px 0 #0B7A5E; }
 
-  .sense-tab[data-sense="lidah"]   { border-color: #FF6B9D; box-shadow: 0 4px 0 #D64577; color: #A82E5A; }
-  .sense-tab[data-sense="lidah"]:hover { box-shadow: 0 6px 0 #D64577; }
+  .sense-tab[data-sense="lidah"]   { border-color: #FF6B9D; box-shadow: 0 5px 0 #D64577; color: #A82E5A; }
+  .sense-tab[data-sense="lidah"]:hover { box-shadow: 0 7px 0 #D64577; }
   .sense-tab[data-sense="lidah"].active { background: linear-gradient(180deg, #FF9EC4, #FF6B9D); box-shadow: 0 2px 0 #A82E5A; }
 
-  .sense-tab[data-sense="kulit"]   { border-color: #A29BFE; box-shadow: 0 4px 0 #7B72D9; color: #4D46A0; }
-  .sense-tab[data-sense="kulit"]:hover { box-shadow: 0 6px 0 #7B72D9; }
+  .sense-tab[data-sense="kulit"]   { border-color: #A29BFE; box-shadow: 0 5px 0 #7B72D9; color: #4D46A0; }
+  .sense-tab[data-sense="kulit"]:hover { box-shadow: 0 7px 0 #7B72D9; }
   .sense-tab[data-sense="kulit"].active { background: linear-gradient(180deg, #C8B6FF, #A29BFE); box-shadow: 0 2px 0 #4D46A0; }
 
   /* Judul indra aktif — DI ATAS viewer 3D */
@@ -73,7 +75,7 @@
   }
   .sense-title-box h3 {
     font-family: 'Baloo 2', cursive;
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     color: #2d3436;
     margin: 0;
     line-height: 1.4;
@@ -84,11 +86,11 @@
   body[data-sense-active="lidah"]   .sense-title-box { background: #FFF0F6; border-left-color: #FF6B9D; }
   body[data-sense-active="kulit"]   .sense-title-box { background: #F3F0FF; border-left-color: #A29BFE; }
 
-  /* ⬇ TAMBAHAN: Deskripsi singkat di dalam judul */
+  /* Deskripsi singkat di dalam judul */
   .sense-desc {
-    margin: 8px 0 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
+    margin: 10px 0 0;
+    font-size: 1.05rem;
+    line-height: 1.55;
     color: #4a5568;
     font-weight: 500;
   }
@@ -119,20 +121,22 @@
   }
   #canvas-3d:active { cursor: grabbing; }
 
+  /* ⬇ HINT "Drag untuk memutar" — diperbesar */
   .viewer-hint {
     position: absolute;
-    bottom: 12px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255,255,255,0.9);
-    padding: 5px 14px;
+    background: rgba(255,255,255,0.95);
+    padding: 9px 20px;
     border-radius: 30px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #555;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #444;
     pointer-events: none;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     white-space: nowrap;
+    letter-spacing: 0.2px;
   }
 
   /* Loading indicator */
@@ -146,7 +150,7 @@
     border-radius: 30px;
     font-weight: 700;
     color: #555;
-    font-size: 0.85rem;
+    font-size: 1rem;
     box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     display: none;
     align-items: center;
@@ -174,7 +178,7 @@
     border-radius: 15px;
     font-weight: 700;
     color: #c0392b;
-    font-size: 0.85rem;
+    font-size: 1rem;
     text-align: center;
     box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     display: none;
@@ -183,13 +187,49 @@
   }
   .viewer-error.show { display: block; }
 
-  @media (max-width: 700px) {
+  /* =========================================================
+     RESPONSIVE — TAB & HINT (HP, iPad, Laptop)
+     ========================================================= */
+
+  /* iPad / Tablet sedang */
+  @media (min-width: 701px) and (max-width: 1023px) {
+    .sense-tab { font-size: 1.1rem; padding: 12px 22px; border-width: 4px; }
+    .sense-title-box h3 { font-size: 1.35rem; }
+    .sense-desc { font-size: 1rem; }
+    .viewer-hint { font-size: 0.95rem; padding: 8px 18px; }
+  }
+
+  /* HP besar */
+  @media (min-width: 481px) and (max-width: 700px) {
+    .senses-tabs { gap: 8px; }
+    .sense-tab { font-size: 1rem; padding: 11px 18px; border-width: 3px; box-shadow: 0 4px 0; }
+    .sense-title-box h3 { font-size: 1.2rem; }
+    .sense-desc { font-size: 0.95rem; }
     .viewer-3d { height: 300px; border-width: 4px; border-radius: 20px; }
-    .sense-tab { font-size: 0.78rem; padding: 7px 12px; border-width: 3px; }
-    .sense-title-box h3 { font-size: 1.05rem; }
+    .viewer-hint { font-size: 0.88rem; padding: 7px 14px; bottom: 10px; }
+    .viewer-loading { font-size: 0.9rem; padding: 10px 18px; }
+    .viewer-error { font-size: 0.9rem; padding: 12px 18px; }
+  }
+
+  /* HP kecil */
+  @media (max-width: 480px) {
+    .senses-tabs { gap: 7px; }
+    .sense-tab { font-size: 0.95rem; padding: 10px 16px; border-width: 3px; box-shadow: 0 4px 0; }
+    .sense-title-box h3 { font-size: 1.1rem; }
     .sense-title-box { padding: 10px 14px; margin-bottom: 12px; }
+    .sense-desc { font-size: 0.9rem; }
+    .viewer-3d { height: 280px; border-width: 4px; border-radius: 20px; }
+    .viewer-hint { font-size: 0.82rem; padding: 6px 12px; bottom: 9px; }
+    .viewer-loading { font-size: 0.85rem; padding: 9px 16px; }
+    .viewer-error { font-size: 0.85rem; padding: 11px 16px; }
+  }
+
+  /* HP sangat kecil */
+  @media (max-width: 360px) {
+    .sense-tab { font-size: 0.88rem; padding: 9px 13px; }
+    .sense-title-box h3 { font-size: 1rem; }
     .sense-desc { font-size: 0.85rem; }
-    .viewer-hint { font-size: 0.68rem; padding: 4px 10px; }
+    .viewer-hint { font-size: 0.76rem; padding: 5px 10px; }
   }
 </style>
 </head>
@@ -433,7 +473,6 @@
   function showModel(name) {
     pendingName = name;
 
-    // Update UI judul + deskripsi + tab
     document.getElementById('sense-title').textContent = INFO[name].title;
     document.getElementById('sense-desc').textContent  = INFO[name].desc;
     document.body.setAttribute('data-sense-active', name);
@@ -466,12 +505,10 @@
     }
   }
 
-  /* ---------- Event tab ---------- */
   document.querySelectorAll('.sense-tab').forEach(tab => {
     tab.addEventListener('click', () => showModel(tab.dataset.sense));
   });
 
-  /* ---------- Resize ---------- */
   function resize() {
     const w = wrapper.clientWidth;
     const h = wrapper.clientHeight;
@@ -481,7 +518,6 @@
   }
   window.addEventListener('resize', resize);
 
-  /* ---------- Animation loop ---------- */
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
@@ -493,7 +529,6 @@
     renderer.render(scene, camera);
   }
 
-  /* ---------- Init ---------- */
   resize();
   showModel('mata');
   animate();
