@@ -1118,3 +1118,123 @@ header .subtitle { font-size: 1.35rem; }
   .mode-buttons .btn-slide { padding: 15px 14px; font-size: 1rem; }
   .slide-nav .btn-slide { padding: 13px 10px; font-size: 0.92rem; }
 }
+
+/* =========================================================
+   HURUF TOMBOL LATIHAN LEBIH BESAR
+   (tempel di PALING BAWAH style.css)
+   ========================================================= */
+
+/* ---------- Default (laptop/iPad) ---------- */
+.mode-buttons .btn-slide {
+  font-size: 1.7rem;
+  font-weight: 800;
+  padding: 24px 32px;
+  min-width: 0;
+  max-width: none;
+  flex: 1 1 0;
+}
+
+.slide-nav .btn-slide {
+  font-size: 1.6rem;
+  font-weight: 800;
+  padding: 22px 28px;
+  min-width: 0;
+  max-width: none;
+  flex: 1 1 0;
+}
+
+/* ---------- Laptop besar (≥ 1400px) ---------- */
+@media (min-width: 1400px) {
+  .mode-buttons .btn-slide {
+    font-size: 2rem;
+    padding: 28px 40px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.9rem;
+    padding: 26px 34px;
+  }
+}
+
+/* ---------- Laptop standar (1181px – 1399px) ---------- */
+@media (min-width: 1181px) and (max-width: 1399px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.9rem;
+    padding: 26px 36px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.8rem;
+    padding: 24px 32px;
+  }
+}
+
+/* ---------- iPad Pro / tablet besar (1024px – 1180px) ---------- */
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.8rem;
+    padding: 26px 34px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.7rem;
+    padding: 24px 30px;
+  }
+}
+
+/* ---------- iPad / tablet sedang (769px – 1023px) ---------- */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.65rem;
+    padding: 24px 30px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.55rem;
+    padding: 22px 26px;
+  }
+}
+
+/* ---------- iPad Mini / tablet kecil (701px – 768px) ---------- */
+@media (min-width: 701px) and (max-width: 768px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.5rem;
+    padding: 22px 26px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.4rem;
+    padding: 20px 22px;
+  }
+}
+
+/* ---------- HP besar (481px – 700px) ---------- */
+@media (min-width: 481px) and (max-width: 700px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.4rem;
+    padding: 20px 22px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.3rem;
+    padding: 18px 16px;
+  }
+}
+
+/* ---------- HP (≤ 480px) ---------- */
+@media (max-width: 480px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.3rem;
+    padding: 18px 20px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.2rem;
+    padding: 16px 12px;
+  }
+}
+
+/* ---------- HP kecil (≤ 380px) ---------- */
+@media (max-width: 380px) {
+  .mode-buttons .btn-slide {
+    font-size: 1.18rem;
+    padding: 16px 16px;
+  }
+  .slide-nav .btn-slide {
+    font-size: 1.08rem;
+    padding: 14px 10px;
+  }
+}
